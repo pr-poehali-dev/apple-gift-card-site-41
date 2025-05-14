@@ -24,6 +24,11 @@
     --input: 240 5.9% 90%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+
+    /* Специальные цвета для морской волны */
+    --ocean-deep: 186 87% 24%; /* #086375 */
+    --ocean-medium: 193 90% 45%; /* #0CAADC */
+    --ocean-light: 189 78% 69%; /* #71D4ED */
   }
 
   .dark {
@@ -78,7 +83,6 @@
     @apply font-medium tracking-tight;
   }
 
-  /* Используем @apply с установленными анимациями */
   .fade-in {
     @apply animate-fade-in;
   }
@@ -97,5 +101,43 @@
 
   .card-shadow {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Специальные стили для карточки Морская волна */
+  .gift-card-ocean-wave {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--ocean-deep)),
+      hsl(var(--ocean-medium)),
+      hsl(var(--ocean-light))
+    );
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gift-card-ocean-wave::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(
+      circle at bottom right,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 70%
+    );
+    animation: ocean-shimmer 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes ocean-shimmer {
+    0% {
+      opacity: 0.5;
+      transform: translateY(5px);
+    }
+    100% {
+      opacity: 0.8;
+      transform: translateY(0);
+    }
   }
 }

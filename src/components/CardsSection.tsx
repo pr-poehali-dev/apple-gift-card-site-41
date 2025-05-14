@@ -13,21 +13,23 @@ import {
 const CARD_DESIGNS = [
   {
     name: "Универсальная",
-    gradientFrom: "blue-500",
-    gradientVia: "purple-500",
-    gradientTo: "pink-500",
+    gradientFrom: "from-blue-500",
+    gradientVia: "via-purple-500",
+    gradientTo: "to-pink-500",
   },
   {
     name: "Солнечный день",
-    gradientFrom: "red-500",
-    gradientVia: "orange-500",
-    gradientTo: "yellow-500",
+    gradientFrom: "from-red-500",
+    gradientVia: "via-orange-500",
+    gradientTo: "to-yellow-500",
   },
   {
     name: "Морская волна",
-    gradientFrom: "teal-500",
-    gradientVia: "cyan-500",
-    gradientTo: "blue-500",
+    gradientFrom: "from-teal-500",
+    gradientVia: "via-cyan-500",
+    gradientTo: "to-blue-500",
+    // Добавляем специальный класс для морской волны
+    specialClass: "gift-card-ocean-wave",
   },
 ];
 
@@ -42,17 +44,26 @@ const GiftCard = ({
 }) => {
   const navigate = useNavigate();
 
-  const handleCardSelect = () => {
+  const handleSelect = () => {
     navigate(
-      `/payment?design=${encodeURIComponent(design.name)}&amount=${amount}&from=${design.gradientFrom}&via=${design.gradientVia}&to=${design.gradientTo}`,
+      `/payment?design=${encodeURIComponent(design.name)}&amount=${amount}&from=${design.gradientFrom.split("-")[1]}&via=${design.gradientVia.split("-")[1]}&to=${design.gradientTo.split("-")[1]}`,
     );
   };
 
   return (
     <div className="w-full h-full">
       <div
-        className={`w-full h-64 rounded-2xl bg-gradient-to-r from-${design.gradientFrom} via-${design.gradientVia} to-${design.gradientTo} card-shadow transition-transform duration-300 hover:scale-[1.02] cursor-pointer`}
+        className={`w-full h-64 rounded-2xl bg-gradient-to-r ${design.gradientFrom} ${design.gradientVia} ${design.gradientTo} card-shadow transition-transform duration-300 hover:scale-[1.02] cursor-pointer ${design.specialClass || ""}`}
       >
+        {/* Добавляем волнистые линии только для морской волны */}
+        {design.name === "Морская волна" && (
+          <div className="absolute bottom-0 right-0 w-32 h-32 overflow-hidden opacity-20">
+            <div className="w-48 h-48 rounded-full border-2 border-white absolute -bottom-32 -right-32"></div>
+            <div className="w-36 h-36 rounded-full border-2 border-white absolute -bottom-24 -right-24"></div>
+            <div className="w-24 h-24 rounded-full border-2 border-white absolute -bottom-16 -right-16"></div>
+          </div>
+        )}
+
         <div className="p-6 h-full flex flex-col justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
@@ -81,7 +92,7 @@ const GiftCard = ({
             <h3 className="text-2xl font-bold mb-1">{amount} ₽</h3>
             <Button
               className="bg-white/20 hover:bg-white/30 text-white text-sm rounded-full backdrop-blur-sm"
-              onClick={handleCardSelect}
+              onClick={handleSelect}
             >
               Выбрать
             </Button>
